@@ -1,0 +1,37 @@
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+def currentOS = DefaultNativePlatform.currentOperatingSystem
+def platform
+if (currentOS.isWindows()) {
+    platform = 'win'
+} else if (currentOS.isLinux()) {
+    platform = 'linux'
+} else if (currentOS.isMacOsX()) {
+    platform = 'mac'
+}
+
+java {
+    modularity.inferModulePath = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.openjfx:javafx-base:16:${platform}"
+    implementation "org.openjfx:javafx-controls:16:${platform}"
+    implementation "org.openjfx:javafx-graphics:16:${platform}"
+    implementation "org.openjfx:javafx-fxml:16:${platform}"
+    implementation 'org.jetbrains:annotations:20.1.0'
+}
+
+application {
+    mainModule = 'IRC.client.main'
+    mainClass = 'core.App'
+}
